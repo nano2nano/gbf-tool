@@ -38,7 +38,6 @@ chrome.debugger.onEvent.addListener((source, method, params: any) => {
       // We get its request id here, write it down to object queue
       const eUrl = params.response.url;
       if (isTargetRequest(eUrl)) {
-        console.log(`capture (${eUrl})`);
         gObjects.push({
           requestId: params.requestId,
           url: eUrl,
@@ -101,11 +100,14 @@ chrome.debugger.onEvent.addListener((source, method, params: any) => {
           case isQuestResultRequest(object.url): {
             const winScenario = getScenarioByCmd('win', res.scenario);
             if (winScenario !== undefined) {
+              console.log('win battle');
               if (winScenario.is_last_raid) {
+                console.log('is last battle');
                 browser.tabs.goBack(source.tabId);
               }
               // browser.tabs.sendMessage(tabId, message);
             } else if (existsCommand('lose', res.scenario)) {
+              console.log('lose battle');
               const message: message.message = {
                 tag: 'game_result',
                 is_win: false,
@@ -124,7 +126,6 @@ chrome.debugger.onEvent.addListener((source, method, params: any) => {
             break;
         }
         // if (gRequests.length === 0) {
-        //   console.log('gRequests is empty');
         //   reattachDebugger(source.tabId);
         // }
       })();
