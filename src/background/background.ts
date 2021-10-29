@@ -2,7 +2,7 @@ import { Alarms, browser } from 'webextension-polyfill-ts';
 import { parseJson } from '../common/utils';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// const gRequests: string[] = [];
+const gRequests: number[] = [];
 const gObjects: { requestId: number; url: string }[] = [];
 
 browser.runtime.onConnect.addListener((port) => {
@@ -26,21 +26,20 @@ chrome.debugger.onDetach.addListener((source, reason) => {
 
 chrome.debugger.onEvent.addListener((source, method, params: any) => {
   switch (method) {
-    // case 'Network.requestWillBeSent': {
-    //   // If we see a url need to be handled, push it into index queue
-    //   const rUrl = params.request.url;
-    //   if (isTargetRequest(rUrl)) {
-    //     gRequests.push(rUrl);
-    //   }
-    //   break;
-    // }
+    case 'Network.requestWillBeSent': {
+      // If we see a url need to be handled, push it into index queue
+      const rUrl = params.request.url;
+      if (isTargetRequest(rUrl)) {
+        gRequests.push(params.requestId);
+      }
+      break;
+    }
     case 'Network.responseReceived': {
       // We get its request id here, write it down to object queue
-      const eUrl = params.response.url;
-      if (isTargetRequest(eUrl)) {
+      if (gRequests.some((element) => element === params.requestId)) {
         gObjects.push({
           requestId: params.requestId,
-          url: eUrl,
+          url: params.response.url,
         });
       }
       break;
@@ -59,7 +58,7 @@ chrome.debugger.onEvent.addListener((source, method, params: any) => {
       }
       // Usually loadingFinished will be immediately after responseReceived
       if (object === null) return;
-      // gRequests.splice(gRequests.indexOf(object.url), 1);
+      gRequests.splice(gRequests.indexOf(object.url), 1);
       (async () => {
         const response = await new Promise<any>((resolve) => {
           chrome.debugger.sendCommand(
@@ -125,9 +124,9 @@ chrome.debugger.onEvent.addListener((source, method, params: any) => {
           default:
             break;
         }
-        // if (gRequests.length === 0) {
-        //   reattachDebugger(source.tabId);
-        // }
+        if (gRequests.length === 0) {
+          reattachDebugger(source.tabId);
+        }
       })();
       break;
     }
