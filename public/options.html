@@ -20,6 +20,39 @@
       <dd><input id="summon_name" type="text" , size="10" /><br /></dd>
       <dt>加護レベル</dt>
       <dd><input id="bless_rank" type="number" size="5" /><br /></dd>
+      <dt>属性</dt>
+      <dd>
+        <label
+          ><input
+            id="attribute_none"
+            type="radio"
+            name="attribute"
+            value="-1"
+            checked
+          />指定なし</label
+        >
+      </dd>
+      <dd>
+        <label><input type="radio" name="attribute" value="1" />火</label>
+      </dd>
+      <dd>
+        <label><input type="radio" name="attribute" value="2" />水</label>
+      </dd>
+      <dd>
+        <label><input type="radio" name="attribute" value="3" />土</label>
+      </dd>
+      <dd>
+        <label><input type="radio" name="attribute" value="4" />風</label>
+      </dd>
+      <dd>
+        <label><input type="radio" name="attribute" value="5" />光</label>
+      </dd>
+      <dd>
+        <label><input type="radio" name="attribute" value="6" />闇</label>
+      </dd>
+      <dd>
+        <label><input type="radio" name="attribute" value="0" />その他</label>
+      </dd>
       <input id="add_filter" type="button" value="フィルター追加" />
       <input id="delete_filter" type="button" value="フィルター削除" />
     </dl>

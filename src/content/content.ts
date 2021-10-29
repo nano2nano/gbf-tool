@@ -37,7 +37,11 @@ async function router() {
     }
     const attributeId = filter.attribute;
     const attributes = await waitSupporterList();
-    const root = attributeId !== undefined ? attributes : document.body;
+    const root = attributeId !== undefined ? attributes[attributeId] : document.body;
+    if (root === undefined) {
+      console.error('not fond attribute');
+      return;
+    }
     const summons = (root as HTMLElement).getElementsByClassName('btn-supporter lis-supporter');
     const idx = findSummonIndex(summons, filter.summon);
     const targetSupporter = idx === -1 ? undefined : summons[idx];

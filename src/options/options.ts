@@ -39,6 +39,8 @@ async function add_filter() {
   const targetUrl = (document.getElementById('target_url') as HTMLInputElement).value;
   const summonName = (document.getElementById('summon_name') as HTMLInputElement).value;
   const blessRank = (document.getElementById('bless_rank') as HTMLInputElement).value;
+  const attributes = Array.from(document.getElementsByName('attribute')) as HTMLInputElement[];
+  const attributeId = getAttributeId(attributes);
   const items = await browser.storage.local.get('summon_filter');
   const filters: parameter.filter[] = items.summon_filter ?? [];
   if (!targetUrl || !summonName || !blessRank) {
@@ -47,7 +49,7 @@ async function add_filter() {
   }
   const filter: parameter.filter = {
     url: targetUrl,
-    attribute: undefined,
+    attribute: attributeId,
     summon: {
       name: summonName,
       bless_rank: Number(blessRank),
@@ -58,7 +60,19 @@ async function add_filter() {
   (document.getElementById('target_url') as HTMLInputElement).value = '';
   (document.getElementById('summon_name') as HTMLInputElement).value = '';
   (document.getElementById('bless_rank') as HTMLInputElement).value = '';
+  (document.getElementById('attribute_none') as HTMLInputElement).checked = true;
   alert('フィルターを追加しました');
+}
+
+function getAttributeId(attributes: HTMLInputElement[]): number | undefined {
+  const checkedAttribute = attributes.find((attribute) => attribute.checked);
+  if (checkedAttribute === undefined) throw 'unexpected attributeId';
+  const attributeValue = Number(checkedAttribute.value);
+  if (attributeValue === -1) {
+    return undefined;
+  } else {
+    return attributeValue;
+  }
 }
 
 async function delete_filter() {
