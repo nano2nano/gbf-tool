@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "watch": "webpack -w --progress",
-    "format": "prettier --write src/**/*.{ts,json}"
+    "format": "prettier --write {src,public}/**/*.{ts,json,html}"
   },
   "author": "nano",
   "license": "ISC",
