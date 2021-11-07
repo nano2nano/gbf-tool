@@ -16,7 +16,7 @@ async function save_options() {
     trial_page: trialPage,
     trial_battle_quest_id: trialBattleQuestID,
   });
-  console.log('save options');
+  alert('保存しました');
 }
 
 // 設定画面で設定を表示する
