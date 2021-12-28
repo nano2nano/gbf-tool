@@ -1,5 +1,5 @@
 import { browser } from 'webextension-polyfill-ts';
-import { getParams, waitSupporterList, waitSelectedSupporterList } from './utils';
+import { getParams, waitSupporterList, waitSelectedSupporterList, waitElement } from './utils';
 
 console.info('load content.js (gbf tool)');
 
@@ -54,20 +54,6 @@ async function router() {
       location.href = items.trial_page;
     }
   }
-}
-
-async function waitElement(element: Element) {
-  return new Promise<void>((res) => {
-    function waitRender() {
-      const rect = element.getBoundingClientRect();
-      if (!(rect.x === 0 && rect.y === 0)) {
-        res();
-      } else {
-        setTimeout(waitRender, 250);
-      }
-    }
-    waitRender();
-  });
 }
 
 function findSummonIndex(

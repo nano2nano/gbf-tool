@@ -35,3 +35,17 @@ export async function waitSelectedSupporterList() {
     _waitSelectedSupporterList();
   });
 }
+
+export async function waitElement(element: Element) {
+  return new Promise<void>((res) => {
+    function waitRender() {
+      const rect = element.getBoundingClientRect();
+      if (!(rect.x === 0 && rect.y === 0)) {
+        res();
+      } else {
+        setTimeout(waitRender, 250);
+      }
+    }
+    waitRender();
+  });
+}
