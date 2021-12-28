@@ -88,8 +88,7 @@ chrome.debugger.onEvent.addListener((source, method, params: any) => {
             const trialBattleQuestID = items.trial_battle_quest_id;
             if (trialBattleQuestID === undefined) {
               console.error('uninitialized trial_battle_quest_id');
-            }
-            if (res.quest_id === trialBattleQuestID) {
+            } else if (res.quest_id === trialBattleQuestID) {
               console.log('quest type: trial');
               await browser.tabs.update(tabId, { url: items.quest_page });
               setReloadAlarm(source.tabId, 0.005);
